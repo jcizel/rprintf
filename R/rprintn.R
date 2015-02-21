@@ -24,10 +24,10 @@
 rprintn <- function(x,...) {
   args <- makelist(...)
   x <- stringr::str_replace_all(x,"%","%%")
-  xs <- unlist(stringr::str_extract_all(x,stringr::perl("(?<!\\{)\\{\\d+(:[\\s\\+\\-\\#\\.\\d]*\\w)?\\}(?!\\})")))
-  xss <- as.numeric(stringr::str_replace_all(xs,stringr::perl("(?<!\\{)\\{(\\d+)(:[\\s\\+\\-\\#\\.\\d]*\\w)?\\}(?!\\})"),"\\1"))
-  pass1 <- stringr::str_replace_all(x,stringr::perl("(?<!\\{)\\{(\\d+):([\\s\\+\\-\\#\\.\\d]*\\w)?\\}(?!\\})"),"%\\2")
-  pass2 <- stringr::str_replace_all(pass1,stringr::perl("(?<!\\{)\\{(\\d+)\\}(?!\\})"),"%s")
+  xs <- unlist(stringr::str_extract_all(x,stringr::regex("(?<!\\{)\\{\\d+(:[\\s\\+\\-\\#\\.\\d]*\\w)?\\}(?!\\})")))
+  xss <- as.numeric(stringr::str_replace_all(xs,stringr::regex("(?<!\\{)\\{(\\d+)(:[\\s\\+\\-\\#\\.\\d]*\\w)?\\}(?!\\})"),"\\1"))
+  pass1 <- stringr::str_replace_all(x,stringr::regex("(?<!\\{)\\{(\\d+):([\\s\\+\\-\\#\\.\\d]*\\w)?\\}(?!\\})"),"%\\2")
+  pass2 <- stringr::str_replace_all(pass1,stringr::regex("(?<!\\{)\\{(\\d+)\\}(?!\\})"),"%s")
   pass3 <- do.call(sprintf,c(list(pass2),args[xss]))
   stringr::str_replace_all(pass3,"\\{\\{(.+)\\}\\}","{\\1}")
 }
